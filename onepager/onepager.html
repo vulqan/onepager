@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journey Through The Seasons</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Navbar Styles */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            margin: 0 10px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-size: 1rem;
+            padding: 5px 10px;
+            transition: background-color 0.3s;
+        }
+
+        nav ul li a:hover {
+            background-color: #555;
+            border-radius: 5px;
+        }
+
+        /* Burger Menu Styles */
+        .burger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .burger div {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 4px 0;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+                flex-direction: column;
+                background-color: #333;
+                position: absolute;
+                top: 60px;
+                right: 20px;
+                width: 200px;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+                border-radius: 10px;
+                overflow: hidden;
+            }
+
+            nav ul.show {
+                display: flex;
+            }
+
+            .burger {
+                display: flex;
+            }
+        }
+
+        /* Section Styles */
+        section {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+            gap: 80px;
+            height: 100vh;
+        }
+
+        section video {
+            width: 100%;
+            max-width: 900px;
+            border-radius: 10px;
+            flex: 1;
+        }
+
+        section .text {
+            flex: 1;
+            padding: 20px;
+            max-width: 400px;
+        }
+
+        .hero {
+            position: relative;
+            background: rgba(0, 0, 0, 0.15);
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .hero video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .hero h1 {
+            color: white;
+            font-size: 4rem;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quiz h2, .content h2, .spring h2, .summer h2, .autumn h2, .winter h2 {
+            font-size: 2.5rem;
+            text-transform: uppercase;
+        }
+
+        .quiz p, .content p, .spring p, .summer p, .autumn p, .winter p {
+            font-size: 1rem;
+        }
+
+        .content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* Quiz Section Styles with Border */
+        .quiz-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .quiz {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 50px;
+            text-align: center;
+            background-color: #f4f4f4;
+            border: 2px solid #dddddd;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .quiz-container {
+            padding: 10px;
+        }
+
+
+        /* Quiz Buttons with More Spacing */
+        .quiz ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .quiz ul li {
+            margin: 10px 0;
+        }
+
+        .quiz button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            background-color: #ffffff;
+            color: rgb(0, 0, 0);
+            margin: 10px; /* Add spacing between buttons */
+        }
+
+        .quiz button:hover {
+            background-color: #8c8c8c;
+        }
+
+        .quiz button.correct {
+            background-color: #4caf50;
+        }
+
+        .quiz button.wrong {
+            background-color: #f44336;
+        }
+
+
+        @media (max-width: 768px) {
+            section {
+                flex-direction: column;
+            }
+
+            section video, section .text {
+                max-width: 100%;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+
+            ::-webkit-scrollbar {
+                display: none;
+        } 
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <div class="logo">4 SEASONS</div>
+        <ul>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#about">Seasons</a></li>
+            <li><a href="#spring">Spring</a></li>
+            <li><a href="#summer">Summer</a></li>
+            <li><a href="#autumn">Autumn</a></li>
+            <li><a href="#winter">Winter</a></li>
+            <li><a href="#quiz">Quiz</a></li>
+        </ul>
+        <div class="burger">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <video autoplay muted loop>
+            <source src="/onepager/assets-onepager/header.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <h1>Journey Through The Seasons</h1>
+    </section>
+
+    <!-- What are the Seasons Section -->
+    <section id="about">
+        <div class="content">
+            <h2>What are the Seasons?</h2>
+            <p>The seasons describe the four different time periods our planet experiences during the year: Spring, Summer, Autumn, and Winter. These natural divisions are marked by changes in weather, hours of daylight, and other shifts in the environment, caused by Earth's orbit around the sun and its tilted axis. Each season has its own unique beauty and characteristics that enrich our lives and connect us to nature's rhythm.</p>
+        </div>
+    </section>
+
+    <!-- Spring Section -->
+    <section id="spring" class="spring">
+        <div class="text">
+            <h2>Spring Season</h2>
+            <p>Spring is also considered the time of awakening nature. In our latitudes, the meteorological spring time falls in the months of March, April and May. The slowly rising temperatures provide the animal and plant world with energy and the cycle of nature slowly begins to move. The first flowers are blooming and many animal species are waking up from their hibernation. In addition, migratory birds are gradually returning from warmer areas. In addition, the first buds sprout due to the increasing intensity of the sunlight. However, due to climate change, the usual flowering dates are also being postponed in some cases (see Brönnimann et al, 2020).</p>
+        </div>
+        <video autoplay muted loop>
+            <source src="/onepager/assets-onepager/spring1.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </section>
+
+    <!-- Summer Section -->
+    <section id="summer" class="summer">
+        <video autoplay muted loop>
+            <source src="/onepager/assets-onepager/summer1.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="text">
+            <h2>Summer Season</h2>
+            <p>Summer is our hottest season and includes the months of June, July and August. Temperatures can occasionally even reach over 30 degrees Celsius in the summer months. These hot periods are often accompanied by a severe thunderstorm. The hot summer days not only cause problems for us humans, but also for animals. To survive this stressful time, many animals have developed their own strategies. Foxes and dogs, for example, pant. The hare, on the other hand, uses his large spoons as heat dissipators. Pretty clever, isn't it? The only thing that helps us is a jump in the pool or a delicious ice cream.</p>
+        </div>
+    </section>
+
+    <!-- Autumn Section -->
+    <section id="autumn" class="autumn">
+        <div class="text">
+            <h2>Autumn Season</h2>
+            <p>Autumn is the season between the hot summer months and the cold winter months. It falls in the months of September, October and November. During this time the wind often blows particularly strongly, but that's not the only reason the colorful leaves sail to the ground. First and foremost, this is Mother Nature's clever plan to prepare the trees for the cold winter months ahead. The animal world is also preparing for the frosty temperatures. For example, some birds fly to the warm south. Other animals, on the other hand, are signaled by the cold temperatures that they should stock up or eat a layer of fat.</p>
+        </div>
+        <video autoplay muted loop>
+            <source src="/onepager/assets-onepager/autumn1.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </section>
+
+    <!-- Winter Section -->
+    <section id="winter" class="winter">
+        <video autoplay muted loop>
+            <source src="/onepager/assets-onepager/winter1.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="text">
+            <h2>Winter Season</h2>
+            <p>Winter is the coldest and darkest time of the year. It includes the months of December, January and February as well as a lot of precipitation. The weather during this time is particularly characterized by snow and frost. In the freezing temperatures, many animals hibernate, hibernate or fall into a state of cold paralysis. But the trees also protect themselves from the frosty temperatures. So they no longer have any leaves at all in order to lose as little water as possible. Because as long as the ground is frozen, the trees cannot extract water from it. Biology has come up with something very clever here! Only conifers are green even in the coldest season because their needles are particularly well protected against water loss.</p>
+        </div>
+    </section>
+
+    <section id="quiz">
+        <div class="quiz-wrapper">
+            <div class="quiz">
+                <h2>Seasons Quiz</h2>
+                <div id="quiz-container">
+                    <p id="question">Loading question...</p>
+                    <ul id="answers">
+                        <!-- Answers will be added dynamically -->
+                    </ul>
+                    <button id="next-btn" class="hidden">Next Question</button>
+                    <button id="restart-btn" class="hidden">Restart Quiz</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        // JavaScript for toggling the burger menu
+        const burger = document.querySelector('.burger');
+        const navLinks = document.querySelector('nav ul');
+
+        burger.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+        });
+
+        const questions = [
+        {
+            question: "In which season do flowers typically start to bloom?",
+            answers: ["Spring", "Summer", "Autumn", "Winter"],
+            correct: 0
+        },
+        {
+            question: "Which season is known for falling leaves?",
+            answers: ["Spring", "Summer", "Autumn", "Winter"],
+            correct: 2
+        },
+        {
+            question: "Which season has the shortest days?",
+            answers: ["Spring", "Summer", "Autumn", "Winter"],
+            correct: 3
+        },
+        {
+            question: "During which season do animals hibernate?",
+            answers: ["Spring", "Summer", "Autumn", "Winter"],
+            correct: 3
+        },
+        {
+            question: "What is the hottest season of the year?",
+            answers: ["Spring", "Summer", "Autumn", "Winter"],
+            correct: 1
+        }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    const questionElement = document.getElementById("question");
+    const answersElement = document.getElementById("answers");
+    const nextButton = document.getElementById("next-btn");
+    const restartButton = document.getElementById("restart-btn");
+
+    function loadQuestion() {
+        const currentQuestion = questions[currentQuestionIndex];
+        questionElement.textContent = currentQuestion.question;
+        answersElement.innerHTML = "";
+        currentQuestion.answers.forEach((answer, index) => {
+            const button = document.createElement("button");
+            button.textContent = answer;
+            button.classList.add("answer-btn");
+            button.addEventListener("click", () => handleAnswer(index));
+            answersElement.appendChild(button);
+        });
+    }
+
+    function handleAnswer(selectedIndex) {
+        const currentQuestion = questions[currentQuestionIndex];
+        const buttons = document.querySelectorAll(".answer-btn");
+
+        if (selectedIndex === currentQuestion.correct) {
+            buttons[selectedIndex].classList.add("correct");
+            score++;
+        } else {
+            buttons[selectedIndex].classList.add("wrong");
+            buttons[currentQuestion.correct].classList.add("correct");
+        }
+
+        buttons.forEach(button => button.disabled = true);
+        nextButton.classList.remove("hidden");
+    }
+
+    nextButton.addEventListener("click", () => {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.length) {
+            loadQuestion();
+            nextButton.classList.add("hidden");
+        } else {
+            showResults();
+        }
+    });
+
+    restartButton.addEventListener("click", () => {
+        currentQuestionIndex = 0;
+        score = 0;
+        loadQuestion();
+        restartButton.classList.add("hidden");
+        questionElement.classList.remove("hidden");
+        answersElement.classList.remove("hidden");
+        nextButton.classList.add("hidden");
+    });
+
+    function showResults() {
+        questionElement.textContent = `You scored ${score} out of ${questions.length}!`;
+        answersElement.classList.add("hidden");
+        nextButton.classList.add("hidden");
+        restartButton.classList.remove("hidden");
+    }
+
+    // Start the quiz
+    loadQuestion();
+
+    </script>
+</body>
+</html>
