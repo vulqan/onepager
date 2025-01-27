@@ -5,11 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Journey Through The Seasons</title>
     <style>
-        body {
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%; /* Ensure full height for snap scrolling */
+            overflow: hidden; /* Prevent default scrolling */
+        }
+
+        body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
             color: #333;
+            scroll-snap-type: y mandatory; /* Enable vertical snap scrolling */
+            overflow-y: scroll; /* Allow vertical scrolling */
+            height: 100vh; /* Full viewport height */
         }
 
         /* Navbar Styles */
@@ -101,7 +114,8 @@
             padding: 20px;
             box-sizing: border-box;
             gap: 80px;
-            height: 100vh;
+            height: 100vh; /* Full viewport height */
+            scroll-snap-align: start; /* Snap to the top of the viewport */
         }
 
         section video {
@@ -188,7 +202,6 @@
             padding: 10px;
         }
 
-
         /* Quiz Buttons with More Spacing */
         .quiz ul {
             list-style: none;
@@ -223,7 +236,6 @@
             background-color: #f44336;
         }
 
-
         @media (max-width: 768px) {
             section {
                 flex-direction: column;
@@ -238,9 +250,13 @@
             }
         }
 
-            ::-webkit-scrollbar {
-                display: none;
-        } 
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -333,120 +349,122 @@
             <div class="quiz">
                 <h2>Seasons Quiz</h2>
                 <div id="quiz-container">
-                    <p id="question">Loading question...</p>
+                    <p id="question">Click "Start Quiz" to begin!</p>
                     <ul id="answers">
                         <!-- Answers will be added dynamically -->
                     </ul>
-                    <button id="next-btn" class="hidden">Next Question</button>
+                    <button id="start-btn">Start Quiz</button>
                     <button id="restart-btn" class="hidden">Restart Quiz</button>
                 </div>
             </div>
         </div>
     </section>
+
     <script>
-        // JavaScript for toggling the burger menu
-        const burger = document.querySelector('.burger');
-        const navLinks = document.querySelector('nav ul');
-
-        burger.addEventListener('click', () => {
-            navLinks.classList.toggle('show');
-        });
-
         const questions = [
-        {
-            question: "In which season do flowers typically start to bloom?",
-            answers: ["Spring", "Summer", "Autumn", "Winter"],
-            correct: 0
-        },
-        {
-            question: "Which season is known for falling leaves?",
-            answers: ["Spring", "Summer", "Autumn", "Winter"],
-            correct: 2
-        },
-        {
-            question: "Which season has the shortest days?",
-            answers: ["Spring", "Summer", "Autumn", "Winter"],
-            correct: 3
-        },
-        {
-            question: "During which season do animals hibernate?",
-            answers: ["Spring", "Summer", "Autumn", "Winter"],
-            correct: 3
-        },
-        {
-            question: "What is the hottest season of the year?",
-            answers: ["Spring", "Summer", "Autumn", "Winter"],
-            correct: 1
-        }
-    ];
+            {
+                question: "In which season do flowers typically start to bloom?",
+                answers: ["Spring", "Summer", "Autumn", "Winter"],
+                correct: 0
+            },
+            {
+                question: "Which season is known for falling leaves?",
+                answers: ["Spring", "Summer", "Autumn", "Winter"],
+                correct: 2
+            },
+            {
+                question: "Which season has the shortest days?",
+                answers: ["Spring", "Summer", "Autumn", "Winter"],
+                correct: 3
+            },
+            {
+                question: "During which season do animals hibernate?",
+                answers: ["Spring", "Summer", "Autumn", "Winter"],
+                correct: 3
+            },
+            {
+                question: "What is the hottest season of the year?",
+                answers: ["Spring", "Summer", "Autumn", "Winter"],
+                correct: 1
+            }
+        ];
 
-    let currentQuestionIndex = 0;
-    let score = 0;
+        let currentQuestionIndex = 0;
+        let score = 0;
 
-    const questionElement = document.getElementById("question");
-    const answersElement = document.getElementById("answers");
-    const nextButton = document.getElementById("next-btn");
-    const restartButton = document.getElementById("restart-btn");
+        const questionElement = document.getElementById("question");
+        const answersElement = document.getElementById("answers");
+        const startButton = document.getElementById("start-btn");
+        const restartButton = document.getElementById("restart-btn");
 
-    function loadQuestion() {
-        const currentQuestion = questions[currentQuestionIndex];
-        questionElement.textContent = currentQuestion.question;
-        answersElement.innerHTML = "";
-        currentQuestion.answers.forEach((answer, index) => {
-            const button = document.createElement("button");
-            button.textContent = answer;
-            button.classList.add("answer-btn");
-            button.addEventListener("click", () => handleAnswer(index));
-            answersElement.appendChild(button);
+        // Start the quiz when the "Start Quiz" button is clicked
+        startButton.addEventListener("click", () => {
+            startButton.classList.add("hidden"); // Hide the start button
+            restartButton.classList.add("hidden"); // Ensure the restart button is hidden
+            loadQuestion(); // Load the first question
         });
-    }
 
-    function handleAnswer(selectedIndex) {
-        const currentQuestion = questions[currentQuestionIndex];
-        const buttons = document.querySelectorAll(".answer-btn");
+        // Restart the quiz when the "Restart Quiz" button is clicked
+        restartButton.addEventListener("click", () => {
+            currentQuestionIndex = 0;
+            score = 0;
+            restartButton.classList.add("hidden"); // Hide the restart button
+            questionElement.textContent = "Click 'Start Quiz' to begin!"; // Reset the question text
+            answersElement.innerHTML = ""; // Clear the answers
+            startButton.classList.remove("hidden"); // Show the start button
+        });
 
-        if (selectedIndex === currentQuestion.correct) {
-            buttons[selectedIndex].classList.add("correct");
-            score++;
-        } else {
-            buttons[selectedIndex].classList.add("wrong");
-            buttons[currentQuestion.correct].classList.add("correct");
+        function loadQuestion() {
+            const currentQuestion = questions[currentQuestionIndex];
+            questionElement.textContent = currentQuestion.question;
+            answersElement.innerHTML = ""; // Clear previous answers
+
+            // Create buttons for each answer
+            currentQuestion.answers.forEach((answer, index) => {
+                const button = document.createElement("button");
+                button.textContent = answer;
+                button.classList.add("answer-btn");
+                button.addEventListener("click", () => handleAnswer(index));
+                answersElement.appendChild(button);
+            });
         }
 
-        buttons.forEach(button => button.disabled = true);
-        nextButton.classList.remove("hidden");
-    }
+        function handleAnswer(selectedIndex) {
+            const currentQuestion = questions[currentQuestionIndex];
+            const buttons = document.querySelectorAll(".answer-btn");
 
-    nextButton.addEventListener("click", () => {
-        currentQuestionIndex++;
-        if (currentQuestionIndex < questions.length) {
-            loadQuestion();
-            nextButton.classList.add("hidden");
-        } else {
-            showResults();
+            // Disable all buttons to prevent multiple clicks
+            buttons.forEach(button => button.disabled = true);
+
+            // Check if the selected answer is correct
+            if (selectedIndex === currentQuestion.correct) {
+                buttons[selectedIndex].classList.add("correct");
+                score++;
+            } else {
+                buttons[selectedIndex].classList.add("wrong");
+                buttons[currentQuestion.correct].classList.add("correct");
+            }
+
+            // Move to the next question after a short delay
+            setTimeout(() => {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    loadQuestion(); // Load the next question
+                } else {
+                    showResults(); // Show results at the end of the quiz
+                }
+            }, 1000); // 1-second delay before moving to the next question
         }
-    });
 
-    restartButton.addEventListener("click", () => {
-        currentQuestionIndex = 0;
-        score = 0;
-        loadQuestion();
-        restartButton.classList.add("hidden");
-        questionElement.classList.remove("hidden");
-        answersElement.classList.remove("hidden");
-        nextButton.classList.add("hidden");
-    });
+        function showResults() {
+            questionElement.textContent = `You scored ${score} out of ${questions.length}!`;
+            answersElement.innerHTML = ""; // Clear the answers
+            restartButton.classList.remove("hidden"); // Show the restart button
+        }
 
-    function showResults() {
-        questionElement.textContent = `You scored ${score} out of ${questions.length}!`;
-        answersElement.classList.add("hidden");
-        nextButton.classList.add("hidden");
-        restartButton.classList.remove("hidden");
-    }
-
-    // Start the quiz
-    loadQuestion();
-
+        console.log("Quiz started"); // Inside the startButton click event
+        console.log("Question loaded:", currentQuestionIndex); // Inside loadQuestion
+        console.log("Answer selected:", selectedIndex); // Inside handleAnswer
     </script>
 </body>
 </html>
