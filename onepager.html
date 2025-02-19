@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta tags for character encoding and responsive design -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Journey Through The Seasons</title>
+    <!-- Internal CSS for styling the page -->
     <style>
+        /* Reset default margin and padding for all elements */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        /* Ensure full height for snap scrolling and prevent default scrolling */
         html, body {
-            height: 100%; /* Ensure full height for snap scrolling */
-            overflow: hidden; /* Prevent default scrolling */
+            height: 100%;
+            overflow: hidden;
         }
 
+        /* Body styling with font, line height, and snap scrolling */
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
@@ -35,7 +40,7 @@
             padding: 10px 20px;
             position: sticky;
             top: 0;
-            z-index: 1000;
+            z-index: 1000; /* Ensure navbar stays on top */
         }
 
         nav .logo {
@@ -67,7 +72,7 @@
             border-radius: 5px;
         }
 
-        /* Burger Menu Styles */
+        /* Burger Menu Styles for mobile responsiveness */
         .burger {
             display: none;
             flex-direction: column;
@@ -81,7 +86,7 @@
             margin: 4px 0;
         }
 
-        /* Responsive Styles */
+        /* Responsive Styles for screens smaller than 768px */
         @media (max-width: 768px) {
             nav ul {
                 display: none;
@@ -105,7 +110,7 @@
             }
         }
 
-        /* Section Styles */
+        /* Section Styles for each season and content section */
         section {
             display: flex;
             flex-wrap: wrap;
@@ -131,12 +136,24 @@
             max-width: 400px;
         }
 
+        /* Hero Section with video background */
         .hero {
             position: relative;
-            background: rgba(0, 0, 0, 0.15);
             height: 100vh;
             width: 100%;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero .video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* Ensure the video container is above the background */
         }
 
         .hero video {
@@ -146,8 +163,7 @@
             transform: translate(-50%, -50%);
             min-width: 100%;
             min-height: 100%;
-            object-fit: cover;
-            z-index: -1;
+            object-fit: cover; /* Ensure the video covers the entire container */
         }
 
         .hero h1 {
@@ -157,9 +173,64 @@
             text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
             text-align: center;
             position: relative;
-            z-index: 1;
+            z-index: 2; /* Ensure the text is above the video and info box */
         }
 
+        /* Info Box Styles for video descriptions */
+        .hero .info-box {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            white-space: pre-wrap;
+            max-width: 300px;
+            z-index: 3; /* Ensure it appears above the video and text */
+        }
+
+        .hero .video-container:hover .info-box {
+            display: block; /* Show on hover */
+        }
+
+        .video-container {
+            position: relative;
+            display: inline-block;
+        }
+        
+        video {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+        }
+
+        .info-box {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            white-space: pre-wrap;
+            max-width: 300px;
+            z-index: 10;
+        }
+
+        .info-box a {
+            color: #007BFF;
+            text-decoration: underline;
+        }
+
+        /* Add hover effect for video container */
+        .video-container:hover .info-box {
+            display: block;
+        }
+
+        /* Styling for headings and paragraphs in sections */
         .quiz h2, .content h2, .spring h2, .summer h2, .autumn h2, .winter h2 {
             font-size: 2.5rem;
             text-transform: uppercase;
@@ -236,6 +307,101 @@
             background-color: #f44336;
         }
 
+        /* FAQ Section Styles */
+        .faq {
+            background-color: #ffffff;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .faq h2 {
+            font-size: 4rem;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            margin-left: 20%; /* Move heading further to the right on larger screens */
+        }
+
+        .faq .content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: left;
+            margin-left: 15%; /* Move questions and answers further to the right on larger screens */
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .faq-question {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-question::after {
+            content: "+";
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .faq-question.active::after {
+            content: "-";
+        }
+
+        .faq-answer {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #555;
+            padding: 10px 0 0 0;
+            display: none;
+        }
+
+        .faq-answer.show {
+            display: block;
+        }
+
+        .faq-answer ul {
+            padding-left: 20px; /* Abstand für Listenpunkte */
+            margin-top: 10px; /* Abstand nach oben */
+            margin-bottom: 10px; /* Abstand nach unten */
+        }
+
+        .faq-answer ul li {
+            margin-bottom: 8px; /* Abstand zwischen den Listenpunkten */
+        }
+
+        /* Responsive Styles for FAQ Section */
+        @media (max-width: 768px) {
+            .faq h2 {
+                margin-left: 10%; /* Reduce margin for smaller screens */
+            }
+
+            .faq .content {
+                margin-left: 10%; /* Reduce margin for smaller screens */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .faq h2 {
+                margin-left: 5%; /* Further reduce margin for very small screens */
+                font-size: 2.5rem; /* Adjust font size for better readability */
+            }
+
+            .faq .content {
+                margin-left: 5%; /* Further reduce margin for very small screens */
+            }
+        }
+
+        /* Responsive Styles for smaller screens */
         @media (max-width: 768px) {
             section {
                 flex-direction: column;
@@ -281,6 +447,7 @@
             }
         }
 
+        /* Hide scrollbar for a cleaner look */
         ::-webkit-scrollbar {
             display: none;
         }
@@ -293,15 +460,18 @@
 <body>
     <!-- Navbar -->
     <nav>
-        <div class="logo">4 SEASONS</div>
+        <div class="logo">Web Journey: The Four Seasons</div>
         <ul>
             <li><a href="#hero">Home</a></li>
-            <li><a href="#about">Seasons</a></li>
+            <li><a href="#about">About</a></li>
             <li><a href="#spring">Spring</a></li>
             <li><a href="#summer">Summer</a></li>
             <li><a href="#autumn">Autumn</a></li>
             <li><a href="#winter">Winter</a></li>
+            <li><a href="#web-technologies" title="Web Technologies">Web Tech</a></li>
+            <li><a href="#behind-the-scenes" title="Behind the Scenes">BTS</a></li>
             <li><a href="#quiz">Quiz</a></li>
+            <li><a href="#faq">FAQ</a></li>
         </ul>
         <div class="burger">
             <div></div>
@@ -312,18 +482,21 @@
 
     <!-- Hero Section -->
     <section id="hero" class="hero">
-        <video autoplay muted loop>
-            <source src="assets-onepager/header.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        <h1>Journey Through The Seasons</h1>
+        <div class="video-container">
+            <video autoplay muted loop>
+                <source src="assets-onepager/header.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="info-box" data-info="Hero video generated using HailuoAI Video. Prompt: A vibrant spring scene in a picturesque meadow, filled with colorful wildflowers blooming in all shades of pink, yellow, and purple. [Generated at <a href='https://hailuoai.video/'>HailuoAI Video</a>]"></div>
+        </div>
+        <h1>A Web Journey Through the Seasons</h1>
     </section>
 
     <!-- What are the Seasons Section -->
     <section id="about">
         <div class="content">
-            <h2>What are the Seasons?</h2>
-            <p>The seasons describe the four different time periods our planet experiences during the year: Spring, Summer, Autumn, and Winter. These natural divisions are marked by changes in weather, hours of daylight, and other shifts in the environment, caused by Earth's orbit around the sun and its tilted axis. Each season has its own unique beauty and characteristics that enrich our lives and connect us to nature's rhythm.</p>
+            <h2>About</h2>
+            <p>This one-pager explores the four seasons (Spring, Summer, Autumn, and Winter) while demonstrating various web technologies. It showcases interactive elements like quizzes, embedded videos, autoplaying media, and responsive design to create an engaging and delightful experience for users. By combining nature's beauty with modern web development, we highlight the potential of the web to bring ideas to life.</p>
         </div>
     </section>
 
@@ -333,18 +506,24 @@
             <h2>Spring Season</h2>
             <p>Spring is also considered the time of awakening nature. In our latitudes, the meteorological spring time falls in the months of March, April and May. The slowly rising temperatures provide the animal and plant world with energy and the cycle of nature slowly begins to move. The first flowers are blooming and many animal species are waking up from their hibernation. In addition, migratory birds are gradually returning from warmer areas. In addition, the first buds sprout due to the increasing intensity of the sunlight. However, due to climate change, the usual flowering dates are also being postponed in some cases (see Brönnimann et al, 2020).</p>
         </div>
-        <video autoplay muted loop>
-            <source src="assets-onepager/spring1.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
+        <div class="video-container">
+            <video autoplay muted loop>
+                <source src="assets-onepager/spring1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="info-box" data-info="Spring video generated using HailuoAI Video. Prompt: A lush tree with fresh green leaves and blooming pink and white flowers, set in a bright and sunny meadow. [Generated at <a href='https://hailuoai.video/'>HailuoAI Video</a>]"></div>
+        </div>
     </section>
 
     <!-- Summer Section -->
     <section id="summer" class="summer">
-        <video autoplay muted loop>
-            <source src="assets-onepager/summer1.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
+        <div class="video-container">
+            <video autoplay muted loop>
+                <source src="assets-onepager/summer1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="info-box" data-info="Summer video generated using HailuoAI Video. Prompt: A radiant summer landscape showcasing a golden field of tall grass gently swaying in the warm breeze. [Generated at <a href='https://hailuoai.video/'>HailuoAI Video</a>]"></div>
+        </div>
         <div class="text">
             <h2>Summer Season</h2>
             <p>Summer is our hottest season and includes the months of June, July and August. Temperatures can occasionally even reach over 30 degrees Celsius in the summer months. These hot periods are often accompanied by a severe thunderstorm. The hot summer days not only cause problems for us humans, but also for animals. To survive this stressful time, many animals have developed their own strategies. Foxes and dogs, for example, pant. The hare, on the other hand, uses his large spoons as heat dissipators. Pretty clever, isn't it? The only thing that helps us is a jump in the pool or a delicious ice cream.</p>
@@ -357,24 +536,54 @@
             <h2>Autumn Season</h2>
             <p>Autumn is the season between the hot summer months and the cold winter months. It falls in the months of September, October and November. During this time the wind often blows particularly strongly, but that's not the only reason the colorful leaves sail to the ground. First and foremost, this is Mother Nature's clever plan to prepare the trees for the cold winter months ahead. The animal world is also preparing for the frosty temperatures. For example, some birds fly to the warm south. Other animals, on the other hand, are signaled by the cold temperatures that they should stock up or eat a layer of fat.</p>
         </div>
-        <video autoplay muted loop>
-            <source src="assets-onepager/autumn1.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
+        <div class="video-container">
+            <video autoplay muted loop>
+                <source src="assets-onepager/autumn1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="info-box" data-info="Autumn video generated using HailuoAI Video. Prompt: A peaceful autumn scene featuring a large tree with golden-yellow and orange leaves, standing in the middle of a wide, open field. [Generated at <a href='https://hailuoai.video/'>HailuoAI Video</a>]"></div>
+        </div>
     </section>
 
     <!-- Winter Section -->
     <section id="winter" class="winter">
-        <video autoplay muted loop>
-            <source src="assets-onepager/winter1.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
+        <div class="video-container">
+            <video autoplay muted loop>
+                <source src="assets-onepager/winter1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="info-box" data-info="Winter video generated using HailuoAI Video. Prompt: A bare tree standing in a quiet, snowy landscape, with snowflakes falling softly and a pale winter sky in the background. [Generated at <a href='https://hailuoai.video/'>HailuoAI Video</a>]"></div>
+        </div>
         <div class="text">
             <h2>Winter Season</h2>
             <p>Winter is the coldest and darkest time of the year. It includes the months of December, January and February as well as a lot of precipitation. The weather during this time is particularly characterized by snow and frost. In the freezing temperatures, many animals hibernate, hibernate or fall into a state of cold paralysis. But the trees also protect themselves from the frosty temperatures. So they no longer have any leaves at all in order to lose as little water as possible. Because as long as the ground is frozen, the trees cannot extract water from it. Biology has come up with something very clever here! Only conifers are green even in the coldest season because their needles are particularly well protected against water loss.</p>
         </div>
     </section>
 
+    <!-- Web Technologies Section -->
+    <section id="web-technologies">
+        <div class="content">
+            <h2>Web Technologies in Action</h2>
+            <p>This one-pager demonstrates how web technologies can bring the concept of seasons to life. By leveraging embedded videos, responsive design, and interactive elements, we create an engaging and immersive experience for users. The use of AI-generated content further highlights the innovative potential of modern web development.</p>
+            <ul>
+                <p><strong>Embedded Videos:</strong> AI-generated visuals showcase the beauty of each season.</p>
+                <p><strong>Responsive Design:</strong> The page adapts seamlessly to different screen sizes.</p>
+                <p><strong>Interactive Quiz:</strong> Engages users and tests their knowledge about the seasons.</p>
+                <p><strong>AI-Generated Content:</strong> Videos created using HailuoAI Video demonstrate the power of AI in web development.</p>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Behind the Scenes Section -->
+    <section id="behind-the-scenes">
+        <div class="content">
+            <h2>Behind the Scenes</h2>
+            <p>The videos on this page were created using <a href="https://hailuoai.video/" target="_blank">HailuoAI Video</a>, an AI-powered tool that transforms text prompts into dynamic visuals. Each video was designed to capture the essence of a season, showcasing the innovative potential of AI in web development.</p>
+            <p>By leveraging AI-generated content, we can create visually stunning and consistent representations of each season, enhancing the overall user experience. This approach also highlights the growing role of AI in modern web development, enabling creators to bring their ideas to life in new and exciting ways.</p>
+        </div>
+    </section>
+
+    <!-- Quiz Section -->
     <section id="quiz">
         <div class="quiz-wrapper">
             <div class="quiz">
@@ -391,7 +600,105 @@
         </div>
     </section>
 
+    <!-- FAQ Section -->
+    <section id="faq" class="faq">
+        <h2>FAQ</h2>
+        <div class="content">
+            <!-- FAQ Item 1 -->
+            <div class="faq-item">
+                <div class="faq-question">What is this one-pager about?</div>
+                <div class="faq-answer">
+                    This one-pager explores the <strong>four seasons</strong> (Spring, Summer, Autumn, and Winter) while showcasing how web technologies can be used to create an engaging and interactive experience. It features embedded videos, an interactive quiz, autoplaying media, and responsive design to bring the concept of seasons to life through technology.
+                </div>
+            </div>
+
+            <!-- FAQ Item 2 -->
+            <div class="faq-item">
+                <div class="faq-question">Is this page focused on a specific feature of the web?</div>
+                <div class="faq-answer">
+                    Yes! This page demonstrates several key features of the web:
+                    <ul>
+                        <li><strong>Embedded videos</strong>: To visually represent each season using AI-generated content.</li>
+                        <li><strong>Interactive quiz</strong>: To engage users and test their knowledge about the seasons.</li>
+                        <li><strong>Autoplaying media</strong>: To create a dynamic and immersive experience.</li>
+                        <li><strong>Responsive design</strong>: Ensures the page works seamlessly across all devices.</li>
+                        <li><strong>Inclusive design</strong>: Adheres to accessibility principles for all users.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- FAQ Item 3 -->
+            <div class="faq-item">
+                <div class="faq-question">What is the purpose of this page?</div>
+                <div class="faq-answer">
+                    The purpose of this page is to demonstrate how web technologies can be used to create an interactive, visually appealing, and informative experience. By focusing on the four seasons, it showcases how multimedia, interactivity, and responsive design can bring a topic to life and engage users in meaningful ways.
+                </div>
+            </div>
+
+            <!-- FAQ Item 4 -->
+            <div class="faq-item">
+                <div class="faq-question">How does this page align with the assignment requirements?</div>
+                <div class="faq-answer">
+                    This page aligns with the assignment requirements in the following ways:
+                    <ul>
+                        <li><strong>Addresses a specific feature of the web</strong>: It highlights embedded media, interactivity, and responsive design as core components.</li>
+                        <li><strong>Implements interactive elements</strong>: Through a quiz, videos, and animations, it engages users and encourages exploration.</li>
+                        <li><strong>Provides context for AI-generated content</strong>: Each video includes information about its generation process and source, ensuring transparency.</li>
+                        <li><strong>Delivers an engaging experience</strong>: The combination of autoplaying videos, transitions, and interactive elements creates a memorable and delightful user experience.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- FAQ Item 5 -->
+       <div class="faq-item">
+            <div class="faq-question">Where do the videos come from?</div>
+            <div class="faq-answer">
+                The videos on this page are AI-generated using <a href="https://hailuoai.video/" target="_blank">HailuoAI Video</a>. Each video was created based on specific prompts designed to visually represent the unique characteristics of each season. For example:
+                <ul>
+                    <li><strong>Header</strong>: A vibrant spring scene in a picturesque meadow, filled with colorful wildflowers blooming in all shades of pink, yellow, and purple.</li>
+                    <li><strong>Spring</strong>: A lush tree with fresh green leaves and blooming pink and white flowers, set in a bright and sunny meadow.</li>
+                    <li><strong>Summer</strong>: A radiant summer landscape showcasing a golden field of tall grass gently swaying in the warm breeze.</li>
+                    <li><strong>Autumn</strong>: A peaceful autumn scene featuring a large tree with golden-yellow and orange leaves, standing in the middle of a wide, open field.</li>
+                    <li><strong>Winter</strong>: A bare tree standing in a quiet, snowy landscape, with snowflakes falling softly and a pale winter sky in the background.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- JavaScript for interactivity -->
     <script>
+        // Burger menu functionality for mobile responsiveness
+        const burger = document.querySelector('.burger');
+        const navUl = document.querySelector('nav ul');
+
+        burger.addEventListener('click', () => {
+            navUl.classList.toggle('show');
+        });
+
+        // FAQ Accordion Functionality
+        const faqQuestions = document.querySelectorAll(".faq-question");
+
+        faqQuestions.forEach((question) => {
+            question.addEventListener("click", () => {
+                const answer = question.nextElementSibling;
+                const isActive = question.classList.contains("active");
+
+                // Close all answers
+                faqQuestions.forEach((q) => {
+                    q.classList.remove("active");
+                    q.nextElementSibling.classList.remove("show");
+                });
+
+                // Open the clicked answer
+                if (!isActive) {
+                    question.classList.add("active");
+                    answer.classList.add("show");
+                }
+            });
+        });
+
+        // Quiz functionality
         const questions = [
             {
                 question: "In which season do flowers typically start to bloom?",
@@ -496,6 +803,23 @@
         console.log("Quiz started"); // Inside the startButton click event
         console.log("Question loaded:", currentQuestionIndex); // Inside loadQuestion
         console.log("Answer selected:", selectedIndex); // Inside handleAnswer
+    </script>
+
+    <!-- JavaScript for Info Box Hover Effect -->
+    <script>
+        document.querySelectorAll('.video-container').forEach(container => {
+            const infoBox = container.querySelector('.info-box');
+            const dataInfo = infoBox.getAttribute('data-info');
+
+            container.addEventListener('mouseenter', () => {
+                infoBox.innerHTML = dataInfo;
+                infoBox.style.display = 'block';
+            });
+
+            container.addEventListener('mouseleave', () => {
+                infoBox.style.display = 'none';
+            });
+        });
     </script>
 </body>
 </html>
